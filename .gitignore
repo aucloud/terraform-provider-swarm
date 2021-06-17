@@ -1,0 +1,6 @@
+*~
+*.bak
+*.tfstate*
+**/.DS_Store
+**/*.tfvars
+**/.terraform*

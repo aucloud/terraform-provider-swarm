@@ -4,3 +4,5 @@
 **/.DS_Store
 **/*.tfvars
 **/.terraform*
+
+/terraform-provider-swarm

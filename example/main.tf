@@ -8,6 +8,7 @@ terraform {
 }
 
 provider "swarm" {
+  use_local = true
 }
 
 data "swarm_nodes" "local_nodes" {

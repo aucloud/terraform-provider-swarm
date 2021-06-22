@@ -11,27 +11,15 @@ import (
 	"gitlab.mgt.aom.australiacloud.com.au/aom/swarm"
 )
 
-// TODO: Add auth and RemoteSwarmer support
-
-var (
-	manager *swarm.Manager
-)
-
-// TODO: Don't use init() here -- Refactor it properly!
-func init() {
-	// TODO: Obviously dela with errors
-	switcher, _ := swarm.NewLocalSwitcher()
-	switcher.Switch("")
-	manager, _ = swarm.NewManager(switcher)
-}
-
 func dataSourceNodesRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	swarmManager := m.(*swarm.Manager)
+
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
 	nodes := make([]map[string]interface{}, 0)
 
-	node, err := manager.GetInfo()
+	node, err := swarmManager.GetInfo()
 	if err != nil {
 		return diag.FromErr(fmt.Errorf("error getting node info: %w", err))
 	}

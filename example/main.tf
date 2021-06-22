@@ -9,3 +9,10 @@ terraform {
 
 provider "swarm" {
 }
+
+data "swarm_nodes" "local_nodes" {
+}
+
+output "nodes" {
+  value = data.swarm_nodes.local_nodes.all
+}

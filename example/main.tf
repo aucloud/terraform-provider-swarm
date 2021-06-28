@@ -14,6 +14,13 @@ provider "swarm" {
 data "swarm_nodes" "local_nodes" {
 }
 
+data "swarm_cluster" "local_cluster" {
+}
+
 output "nodes" {
   value = data.swarm_nodes.local_nodes.all
+}
+
+output "cluster" {
+  value = data.swarm_cluster.local_cluster
 }

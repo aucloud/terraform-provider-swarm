@@ -81,7 +81,8 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{},
 		DataSourcesMap: map[string]*schema.Resource{
-			"swarm_nodes": dataSourceNodes(),
+			"swarm_cluster": dataSourceCluster(),
+			"swarm_nodes":   dataSourceNodes(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}

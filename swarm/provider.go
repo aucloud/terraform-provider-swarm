@@ -32,7 +32,12 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		}
 
 		if err = switcher.Switch(""); err != nil {
-			return nil, diag.FromErr(fmt.Errorf("error switching to local node: %w", err))
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to switch nodes",
+				Detail:   "Unable to switch to and connect to local swarm node",
+			})
+			return nil, diags
 		}
 	} else {
 		switcher, err = swarm.NewSSHSwitcher(sshUser, sshAddr, sshKey)
@@ -41,7 +46,12 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		}
 
 		if err = switcher.Switch(sshAddr); err != nil {
-			return nil, diag.FromErr(fmt.Errorf("error switching to ssh node: %w", err))
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to switch nodes",
+				Detail:   "Unable to switch to and connect to remote swarm node",
+			})
+			return nil, diags
 		}
 	}
 

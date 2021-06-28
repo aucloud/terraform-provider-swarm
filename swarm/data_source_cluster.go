@@ -10,10 +10,10 @@ import (
 )
 
 func dataSourceClusterRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	swarmManager := m.(*swarm.Manager)
-
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
+
+	swarmManager := m.(*swarm.Manager)
 
 	node, err := swarmManager.GetInfo()
 	if err != nil {

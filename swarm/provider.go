@@ -89,7 +89,9 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("SSH_KEY", nil),
 			},
 		},
-		ResourcesMap: map[string]*schema.Resource{},
+		ResourcesMap: map[string]*schema.Resource{
+			"swarm_cluster": resourceCluster(),
+		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"swarm_cluster": dataSourceCluster(),
 			"swarm_nodes":   dataSourceNodes(),

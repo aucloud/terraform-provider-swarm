@@ -13,7 +13,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	userLocal := d.Get("use_local").(bool)
+	useLocal := d.Get("use_local").(bool)
 
 	sshAddr := d.Get("ssh_addr").(string)
 	sshUser := d.Get("ssh_user").(string)
@@ -25,7 +25,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		switcher swarm.Switcher
 	)
 
-	if userLocal {
+	if useLocal {
 		switcher, err = swarm.NewLocalSwitcher()
 		if err != nil {
 			return nil, diag.FromErr(fmt.Errorf("error creating local switcher: %w", err))
@@ -35,7 +35,10 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
 				Summary:  "Unable to switch nodes",
-				Detail:   "Unable to switch to and connect to local swarm node",
+				Detail: fmt.Sprintf(
+					"Unable to switch to and connect to local swarm node: %s",
+					err.Error(),
+				),
 			})
 			return nil, diags
 		}
@@ -45,13 +48,18 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 			return nil, diag.FromErr(fmt.Errorf("error creating ssh switcher: %w", err))
 		}
 
-		if err = switcher.Switch(sshAddr); err != nil {
-			diags = append(diags, diag.Diagnostic{
-				Severity: diag.Error,
-				Summary:  "Unable to switch nodes",
-				Detail:   "Unable to switch to and connect to remote swarm node",
-			})
-			return nil, diags
+		if sshAddr != "" {
+			if err = switcher.Switch(sshAddr); err != nil {
+				diags = append(diags, diag.Diagnostic{
+					Severity: diag.Error,
+					Summary:  "Unable to switch nodes",
+					Detail: fmt.Sprintf(
+						"Unable to switch to and connect to remote swarm node: %s",
+						err.Error(),
+					),
+				})
+				return nil, diags
+			}
 		}
 	}
 

@@ -24,11 +24,11 @@ require (
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	gitlab.mgt.aom.australiacloud.com.au/aom/golib/runcmd v0.0.0-20210621054751-51606f2d5342 // indirect
-	gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210622041935-c1a0df53f12c
+	gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210630023420-2e9a7210bbb2
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
-	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20210624195500-8bfb893ecb84 // indirect
+	google.golang.org/genproto v0.0.0-20210629200056-84d6f6074151 // indirect
+	google.golang.org/grpc v1.39.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )

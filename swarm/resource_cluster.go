@@ -52,7 +52,7 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 	swarmManager := m.(*swarm.Manager)
 
 	nodes := d.Get("nodes").([]interface{})
-	vmnodes := make([]swarm.VMNode, len(nodes))
+	vmnodes := make(swarm.VMNodes, len(nodes))
 
 	for i, node := range nodes {
 		node := node.(map[string]interface{})
@@ -69,18 +69,57 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 		}
 	}
 
-	if err := swarmManager.CreateSwarm(vmnodes); err != nil {
-		diags = append(diags, diag.Diagnostic{
-			Severity: diag.Error,
-			Summary:  "Unable to create swarm cluster",
-			Detail:   fmt.Sprintf("Unable to create swarm clusterswitch to: %s", err),
-		})
-		return diags
+	if swarmManager.Runner() == nil {
+		managers := vmnodes.FilterByTag(swarm.RoleTag, swarm.ManagerRole)
+
+		if err := swarmManager.SwitchNode(managers[0].PublicAddress); err != nil {
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to switch to first manager node",
+				Detail: fmt.Sprintf(
+					"Error switching to first manager node %s via %s: %s",
+					managers[0].Hostname, managers[0].PublicAddress, err.Error(),
+				),
+			})
+			return diags
+		}
 	}
 
 	node, err := swarmManager.GetInfo()
 	if err != nil {
-		return diag.FromErr(fmt.Errorf("error getting node info: %w", err))
+		diags = append(diags, diag.Diagnostic{
+			Severity: diag.Error,
+			Summary:  "Unable to retrieve node information",
+			Detail: fmt.Sprintf(
+				"Error getting node info from %s: %s",
+				swarmManager.Switcher().String(), err.Error(),
+			),
+		})
+		return diags
+	}
+
+	if node.Swarm.Cluster.ID == "" {
+		if err := swarmManager.CreateSwarm(vmnodes); err != nil {
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to create swarm cluster",
+				Detail:   fmt.Sprintf("Unable to create swarm cluster: %s", err),
+			})
+			return diags
+		}
+
+		node, err = swarmManager.GetInfo()
+		if err != nil {
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to retrieve cluster information",
+				Detail: fmt.Sprintf(
+					"Error getting node info from %s: %s",
+					swarmManager.Switcher().String(), err.Error(),
+				),
+			})
+			return diags
+		}
 	}
 
 	d.SetId(node.Swarm.Cluster.ID)

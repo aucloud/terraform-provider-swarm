@@ -493,6 +493,8 @@ gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210622041935-c1a0df53f12
 gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210622041935-c1a0df53f12c/go.mod h1:7gPXiAf5GLBbUiAKT0g7zs3BHT3ucWfFwT/TVhSnvmw=
 gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210630023420-2e9a7210bbb2 h1:a/ayOW+4YAUOZBbCSRI7qXMPRRMBXrwcdv9Yb0NShw4=
 gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210630023420-2e9a7210bbb2/go.mod h1:zYXpb6fFxKNc2wLdFdEa9fhBnkOKR5tqQgyV/fktRjc=
+gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210630064231-63fe34f575e6 h1:7R6rfg+1xTTnseln4icB30VRnfzi1QTv0U9ySPQ/LVA=
+gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210630064231-63fe34f575e6/go.mod h1:zYXpb6fFxKNc2wLdFdEa9fhBnkOKR5tqQgyV/fktRjc=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/etcd/api/v3 v3.5.0/go.mod h1:cbVKeC6lCfl7j/8jBhAK6aIYO9XOjdptoxU/nLQcPvs=
 go.etcd.io/etcd/client/pkg/v3 v3.5.0/go.mod h1:IJHfcCEKxYu1Os13ZdwCwIUTUVGYTSAM3YSwc9/Ac1g=

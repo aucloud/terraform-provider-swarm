@@ -255,7 +255,7 @@ func resourceClusterUpdate(ctx context.Context, d *schema.ResourceData, m interf
 			return diags
 		}
 
-		if err := d.Set("created_at", time.Now().Format(time.RFC3339)); err != nil {
+		if err := d.Set("updated_at", time.Now().Format(time.RFC3339)); err != nil {
 			return diag.FromErr(err)
 		}
 	}

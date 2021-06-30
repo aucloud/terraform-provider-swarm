@@ -130,8 +130,63 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 }
 
 func resourceClusterRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	// Same as dataSourceClusterRead
-	return dataSourceClusterRead(ctx, d, m)
+	// Warning or errors can be collected in a slice type
+	var diags diag.Diagnostics
+
+	swarmManager := m.(*swarm.Manager)
+
+	nodes := d.Get("nodes").([]interface{})
+	vmnodes := make(swarm.VMNodes, len(nodes))
+
+	for i, node := range nodes {
+		node := node.(map[string]interface{})
+		tags := make(map[string]string)
+		for k, v := range node["tags"].(map[string]interface{}) {
+			tags[k] = v.(string)
+		}
+
+		vmnodes[i] = swarm.VMNode{
+			Hostname:       node["hostname"].(string),
+			PublicAddress:  node["public_address"].(string),
+			PrivateAddress: node["private_address"].(string),
+			Tags:           tags,
+		}
+	}
+
+	if swarmManager.Runner() == nil {
+		managers := vmnodes.FilterByTag(swarm.RoleTag, swarm.ManagerRole)
+
+		if err := swarmManager.SwitchNode(managers[0].PublicAddress); err != nil {
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Error,
+				Summary:  "Unable to switch to first manager node",
+				Detail: fmt.Sprintf(
+					"Error switching to first manager node %s via %s: %s",
+					managers[0].Hostname, managers[0].PublicAddress, err.Error(),
+				),
+			})
+			return diags
+		}
+	}
+
+	node, err := swarmManager.GetInfo()
+	if err != nil {
+		diags = append(diags, diag.Diagnostic{
+			Severity: diag.Error,
+			Summary:  "Unable to retrieve node information",
+			Detail: fmt.Sprintf(
+				"Error getting node info from %s: %s",
+				swarmManager.Switcher().String(), err.Error(),
+			),
+		})
+		return diags
+	}
+
+	d.SetId(node.Swarm.Cluster.ID)
+
+	dataSourceClusterRead(ctx, d, m)
+
+	return diags
 }
 
 func resourceClusterUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {

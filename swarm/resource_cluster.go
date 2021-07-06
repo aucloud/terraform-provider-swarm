@@ -17,7 +17,7 @@ func resourceCluster() *schema.Resource {
 		UpdateContext: resourceClusterUpdate,
 		DeleteContext: resourceClusterDelete,
 		Schema: map[string]*schema.Schema{
-			"force-single-manager-cluster": &schema.Schema{
+			"force_single_manager_cluster": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
 			},
@@ -67,7 +67,7 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 
 	swarmManager := m.(*swarm.Manager)
 
-	forceSingleManagerCluster := d.Get("force-single-manager-cluster").(bool)
+	forceSingleManagerCluster := d.Get("force_single_manager_cluster").(bool)
 
 	nodes := d.Get("nodes").([]interface{})
 	vmnodes := make(swarm.VMNodes, len(nodes))

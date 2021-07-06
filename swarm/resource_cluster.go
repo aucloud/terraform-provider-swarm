@@ -17,6 +17,10 @@ func resourceCluster() *schema.Resource {
 		UpdateContext: resourceClusterUpdate,
 		DeleteContext: resourceClusterDelete,
 		Schema: map[string]*schema.Schema{
+			"force-single-manager-cluster": &schema.Schema{
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
 			"nodes": &schema.Schema{
 				Type:     schema.TypeList,
 				Required: true,
@@ -62,6 +66,8 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 	var diags diag.Diagnostics
 
 	swarmManager := m.(*swarm.Manager)
+
+	forceSingleManagerCluster := d.Get("force-single-manager-cluster").(bool)
 
 	nodes := d.Get("nodes").([]interface{})
 	vmnodes := make(swarm.VMNodes, len(nodes))
@@ -111,7 +117,7 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 	}
 
 	if node.Swarm.Cluster.ID == "" {
-		if err := swarmManager.CreateSwarm(vmnodes); err != nil {
+		if err := swarmManager.CreateSwarm(vmnodes, forceSingleManagerCluster); err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
 				Summary:  "Unable to create swarm cluster",

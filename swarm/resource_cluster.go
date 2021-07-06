@@ -20,6 +20,7 @@ func resourceCluster() *schema.Resource {
 			"force_single_manager_cluster": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
+				Default:  false,
 			},
 			"nodes": &schema.Schema{
 				Type:     schema.TypeList,
@@ -117,6 +118,14 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 	}
 
 	if node.Swarm.Cluster.ID == "" {
+		if forceSingleManagerCluster {
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Warning,
+				Summary:  "Forcing Single Manager Cluster",
+				Detail:   "Forcing single manager clsuter (unsuitable for prod)",
+			})
+		}
+
 		if err := swarmManager.CreateSwarm(vmnodes, forceSingleManagerCluster); err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,

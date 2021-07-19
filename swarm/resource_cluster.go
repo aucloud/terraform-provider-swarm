@@ -189,13 +189,19 @@ func resourceClusterRead(ctx context.Context, d *schema.ResourceData, m interfac
 
 		if err := swarmManager.SwitchNode(managers[0].PublicAddress); err != nil {
 			diags = append(diags, diag.Diagnostic{
-				Severity: diag.Error,
+				Severity: diag.Warning,
 				Summary:  "Unable to switch to first manager node",
 				Detail: fmt.Sprintf(
 					"Error switching to first manager node %s via %s: %s",
 					managers[0].Hostname, managers[0].PublicAddress, err.Error(),
 				),
 			})
+
+			// TODO: Really need to see if we can figure our a more reliable
+			//       way to identity whether the underlying machines on which
+			//       the swarm cluster was formed are **really** gone or not
+			//       instead of basically assuming here based on an error.
+			d.SetId("")
 			return diags
 		}
 	}

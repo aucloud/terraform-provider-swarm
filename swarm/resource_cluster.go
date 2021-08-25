@@ -17,7 +17,7 @@ func resourceCluster() *schema.Resource {
 		UpdateContext: resourceClusterUpdate,
 		DeleteContext: resourceClusterDelete,
 		Schema: map[string]*schema.Schema{
-			"force_single_manager_cluster": &schema.Schema{
+			"skip_manager_validation": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  false,
@@ -68,7 +68,7 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 
 	swarmManager := m.(*swarm.Manager)
 
-	forceSingleManagerCluster := d.Get("force_single_manager_cluster").(bool)
+	force := d.Get("skip_manager_validation").(bool)
 
 	nodes := d.Get("nodes").([]interface{})
 	vmnodes := make(swarm.VMNodes, len(nodes))
@@ -88,9 +88,8 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 		}
 	}
 
+	managers := vmnodes.FilterByTag(swarm.RoleTag, swarm.ManagerRole)
 	if swarmManager.Runner() == nil {
-		managers := vmnodes.FilterByTag(swarm.RoleTag, swarm.ManagerRole)
-
 		if err := swarmManager.SwitchNode(managers[0].PublicAddress); err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
@@ -118,15 +117,18 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 	}
 
 	if node.Swarm.Cluster.ID == "" {
-		if forceSingleManagerCluster {
+		if force {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Warning,
-				Summary:  "Forcing Single Manager Cluster",
-				Detail:   "Forcing single manager clsuter (unsuitable for prod)",
+				Summary:  "Skipping Manager validation",
+				Detail: fmt.Sprintf(
+					"Forcing creation of %d manager cluster (unsuitable for prod, or ineffective quorum)",
+					len(managers),
+				),
 			})
 		}
 
-		if err := swarmManager.CreateSwarm(vmnodes, forceSingleManagerCluster); err != nil {
+		if err := swarmManager.CreateSwarm(vmnodes, force); err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
 				Summary:  "Unable to create swarm cluster",

@@ -25,10 +25,10 @@ require (
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/zclconf/go-cty v1.9.1 // indirect
 	gitlab.mgt.aom.australiacloud.com.au/aom/golib/runcmd v0.0.0-20210621054751-51606f2d5342 // indirect
-	gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20210825013959-c59e25712391
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
+	gitlab.mgt.aom.australiacloud.com.au/aom/swarm v0.0.0-20211006050407-972f01f05785
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
-	golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf // indirect
+	golang.org/x/sys v0.0.0-20211004093028-2c5d950f24ef // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20210824181836-a4879c3d0e89 // indirect

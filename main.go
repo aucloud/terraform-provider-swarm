@@ -4,7 +4,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 
-	"gitlab.mgt.aom.australiacloud.com.au/aom/terraform-provider-swarm/swarm"
+	"github.com/aucloud/terraform-provider-swarm/swarm"
 )
 
 func main() {

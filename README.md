@@ -1,4 +1,4 @@
-# Terraform Provider Swarm
+# Terraform Provider for Docker Swarm
 
 Run the following command to build the provider
 

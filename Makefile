@@ -1,6 +1,6 @@
 TEST?=$$(go list ./... | grep -v 'vendor')
-HOSTNAME=australiacloud.com.au
-NAMESPACE=aom
+HOSTNAME=github.com
+NAMESPACE=aucloud
 NAME=swarm
 BINARY=terraform-provider-${NAME}
 VERSION=0.1

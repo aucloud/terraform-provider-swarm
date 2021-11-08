@@ -53,6 +53,6 @@ terraform apply
 
 For a full example see [example/main.tf](/example/main.tf)
 
-## Licnese
+## License
 
 `terraform-provider-swarm` is licensed under the terms of the [AGPLv3](/LICENSE)

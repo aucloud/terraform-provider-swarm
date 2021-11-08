@@ -51,7 +51,7 @@ terraform init
 terraform apply
 ```
 
-For a full example see [example/main.tf](/example/main.tf)
+For a full example see [examples/main.tf](/examples/main.tf)
 
 ## License
 

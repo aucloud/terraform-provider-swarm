@@ -22,10 +22,10 @@ resource "swarm_cluster" "local_cluster" {
   }
 }
 
-data "swarm_nodes" "local_nodes" {
+data "swarm_cluster" "local_cluster" {
 }
 
-data "swarm_cluster" "local_cluster" {
+data "swarm_nodes" "local_nodes" {
 }
 
 output "nodes" {

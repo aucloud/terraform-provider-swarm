@@ -1,13 +1,16 @@
+---
 name: Go
-
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:

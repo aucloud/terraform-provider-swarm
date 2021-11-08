@@ -8,14 +8,14 @@
 
 Run the following command to build the provider
 
-```#!console
+```console
 make install
 ```
 
 ### Sample Configuration
 
 `main.tf`:
-```#!terraform
+```terraform
 terraform {
     required_providers {
         swarm = {
@@ -46,12 +46,12 @@ output "cluster" {
 ```
 
 Initialize and apply the Terraform:
-```#!console
+```console
 terraform init
 terraform apply
 ```
 
-For a full example see [examples/main.tf](/examples/main.tf)
+For a full example see [example/main.tf](/example/main.tf)
 
 ## Licnese
 

@@ -2,24 +2,57 @@
 
 [![Go](https://github.com/aucloud/terraform-provider-swarm/actions/workflows/go.yml/badge.svg)](https://github.com/aucloud/terraform-provider-swarm/actions/workflows/go.yml)
 
-`terraform-provider-swarm` is a [Terraform](https://terraform.io) provider for the creation and management of [Docker Swarm](https://docs.docker.com/engine/swarm/) clusters (_an alternative container orchestrator to Kubernetes and Nomad_).
+`terraform-provider-swarm` is a [Terraform](https://terraform.io) provider for the creation and management of [Docker Swarm](https://docs.docker.com/engine/swarm/) clusters (_an alternative container orchestrator to Kubernetes and Nomad_)
+
+## Quick Start
 
 Run the following command to build the provider
 
-```shell
-go build -o terraform-provider-swarm
-```
-
-## Test sample configuration
-
-First, build and install the provider.
-
-```shell
+```#!console
 make install
 ```
 
-Then, run the following command to initialize the workspace and apply the sample configuration.
+### Sample Configuration
 
-```shell
-terraform init && terraform apply
+`main.tf`:
+```#!terraform
+terraform {
+    required_providers {
+        swarm = {
+            source = "aucloud/swarm"
+            version = "1.0.0"
+        }
+    }
+}
+
+provider "swarm" {
+  use_local = true
+}
+
+resource "swarm_cluster" "local_cluster" {
+  nodes {
+    hostname = "localhost"
+    public_address = "127.0.0.1"
+    private_address = "127.0.0.1"
+    tags = {
+      role = "manager"
+    }
+  }
+}
+
+output "cluster" {
+  value = data.swarm_cluster.local_cluster
+}
 ```
+
+Initialize and apply the Terraform:
+```#!console
+terraform init
+terraform apply
+```
+
+For a full example see [examples/main.tf](/examples/main.tf)
+
+## Licnese
+
+`terraform-provider-swarm` is licensed under the terms of the [AGPLv3](/LICENSE)

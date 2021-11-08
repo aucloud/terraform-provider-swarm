@@ -6,4 +6,5 @@
 **/*.tfvars
 **/.terraform*
 
+/dist
 /terraform-provider-swarm

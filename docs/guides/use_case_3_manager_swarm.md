@@ -21,7 +21,7 @@ The Swarm Provider allows users to create a Docker Swarm cluster using Terraform
 
 ## Swarm Provider
 Add the swarm provider information (e.g. provider.tf) and any configuration items (.e.g. local ssh key credentials)
-```
+```terraform
 terraform {
   required_version = ">= 0.13"
   required_providers {
@@ -45,7 +45,7 @@ provider "swarm" {
 ```
 ## Nodes schema
 The *swarm_cluster* resource expects a set of nodes that provide VM instance data that can be used to perform swarming. For our 3 manager node use case, we can create the *swarm_cluster* resource using the dynamic **nodes** schema data as follows (in main.tf):
-```
+```terraform
 resource "swarm_cluster" "cluster" {
   skip_manager_validation = true
   dynamic "nodes" {
@@ -69,7 +69,7 @@ The tags "role" map item provides information to the swarm provider on the type 
 
 ## Swarm Cluster Output
 The manager nodes after creation:
-```
+```terraform
 Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
 
 Outputs:

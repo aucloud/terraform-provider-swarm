@@ -30,7 +30,7 @@ terraform {
       version = "1.21.0"
     }
     swarm = {
-      source = "australiacloud.com.au/aucloud/swarm"
+      source = "aucloud/swarm"
       version = "1.0.0"
     }
   }

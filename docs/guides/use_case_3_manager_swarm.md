@@ -14,7 +14,6 @@ The Swarm Provider allows users to create a Docker Swarm cluster using Terraform
 ├── main.tf
 ├── provider.tf
 ├── swarm.tfvars
-├── use_case_3_manager_swarm.md
 ├── variables.tf
 └── vm.tf
 ```

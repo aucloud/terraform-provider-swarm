@@ -1,7 +1,7 @@
 ---
-page_title: "Use Case: Digital Ocean Docker Swarm Cluster"
+page_title: "Digitalocean Docker Swarm Cluster"
 ---
-# Swarm Provider Use Case - Digital Ocean 1 node manager and 1 worker cluster
+# Digitalocean Swarm Cluster with 1 manager node and 1 worker node
 ## Use Case Description
 The Swarm Provider allows users to create a Docker Swarm cluster using Terraform. This use case shows how a single manager and node swarm cluster can be created in Digital Ocean.
 

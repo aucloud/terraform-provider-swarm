@@ -1,4 +1,8 @@
-# Swarm Provider Use Case - 3 node manager swarm
+---
+page_title: "Creating a 3-manager node Swarm Cluster with vSphere"
+---
+
+# Creating a 3-manager node Swarm Cluster with vSphere
 ## Use Case Description
 The Swarm Provider allows users to create a Docker Swarm cluster using Terraform. This use case shows how three VM instances can be added as managers in a swarm cluster.
 

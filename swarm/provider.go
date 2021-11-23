@@ -22,6 +22,7 @@ package swarm
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -35,12 +36,17 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 
 	useLocal := d.Get("use_local").(bool)
 
+	sshTimeout := d.Get("ssh_timeout").(string)
+	timeout, err := time.ParseDuration(sshTimeout)
+	if err != nil {
+		return nil, diag.FromErr(fmt.Errorf("error parsing ssh timeout %s: %w", sshTimeout, err))
+	}
+
 	sshAddr := d.Get("ssh_addr").(string)
 	sshUser := d.Get("ssh_user").(string)
 	sshKey := d.Get("ssh_key").(string)
 
 	var (
-		err      error
 		manager  *swarm.Manager
 		switcher swarm.Switcher
 	)
@@ -51,7 +57,8 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 			return nil, diag.FromErr(fmt.Errorf("error creating local switcher: %w", err))
 		}
 
-		if err = switcher.Switch(""); err != nil {
+		ctx := context.Background()
+		if err = switcher.Switch(ctx, ""); err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
 				Summary:  "Unable to switch nodes",
@@ -63,13 +70,15 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 			return nil, diags
 		}
 	} else {
-		switcher, err = swarm.NewSSHSwitcher(sshUser, sshAddr, sshKey)
+		switcher, err = swarm.NewSSHSwitcher(sshUser, sshAddr, sshKey, timeout)
 		if err != nil {
 			return nil, diag.FromErr(fmt.Errorf("error creating ssh switcher: %w", err))
 		}
 
 		if sshAddr != "" {
-			if err = switcher.Switch(sshAddr); err != nil {
+			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			defer cancel()
+			if err = switcher.Switch(ctx, sshAddr); err != nil {
 				diags = append(diags, diag.Diagnostic{
 					Severity: diag.Error,
 					Summary:  "Unable to switch nodes",
@@ -83,7 +92,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		}
 	}
 
-	manager, err = swarm.NewManager(switcher)
+	manager, err = swarm.NewManager(switcher, swarm.WithTimeout(timeout))
 	if err != nil {
 		return nil, diag.FromErr(fmt.Errorf("error creating swarm manager: %s", err))
 	}
@@ -95,22 +104,28 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
-			"use_local": &schema.Schema{
+			"use_local": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("USE_LOCAL", nil),
 			},
-			"ssh_addr": &schema.Schema{
+			"ssh_timeout": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "5m",
+				DefaultFunc: schema.EnvDefaultFunc("SSH_TIMEOUT", nil),
+			},
+			"ssh_addr": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("SSH_ADDR", nil),
 			},
-			"ssh_user": &schema.Schema{
+			"ssh_user": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("SSH_USER", nil),
 			},
-			"ssh_key": &schema.Schema{
+			"ssh_key": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Sensitive:   true,

@@ -72,28 +72,28 @@ func dataSourceCluster() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceClusterRead,
 		Schema: map[string]*schema.Schema{
-			"created_at": &schema.Schema{
+			"created_at": {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
-			"nodes": &schema.Schema{
+			"nodes": {
 				Type:     schema.TypeInt,
 				Computed: true,
 			},
-			"managers": &schema.Schema{
+			"managers": {
 				Type:     schema.TypeInt,
 				Computed: true,
 			},
-			"remote_managers": &schema.Schema{
+			"remote_managers": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"id": &schema.Schema{
+						"id": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"addr": &schema.Schema{
+						"addr": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},

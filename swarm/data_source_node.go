@@ -71,55 +71,55 @@ func dataSourceNodes() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceNodesRead,
 		Schema: map[string]*schema.Schema{
-			"all": &schema.Schema{
+			"all": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"id": &schema.Schema{
+						"id": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"name": &schema.Schema{
+						"name": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"labels": &schema.Schema{
+						"labels": {
 							Type:     schema.TypeList,
 							Computed: true,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 							},
 						},
-						"os": &schema.Schema{
+						"os": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"os_type": &schema.Schema{
+						"os_type": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"os_version": &schema.Schema{
+						"os_version": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"kernel_version": &schema.Schema{
+						"kernel_version": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"server_version": &schema.Schema{
+						"server_version": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"cpus": &schema.Schema{
+						"cpus": {
 							Type:     schema.TypeInt,
 							Computed: true,
 						},
-						"memory": &schema.Schema{
+						"memory": {
 							Type:     schema.TypeInt,
 							Computed: true,
 						},
-						"manager": &schema.Schema{
+						"manager": {
 							Type:     schema.TypeBool,
 							Computed: true,
 						},

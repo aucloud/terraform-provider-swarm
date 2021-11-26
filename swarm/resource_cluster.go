@@ -37,29 +37,29 @@ func resourceCluster() *schema.Resource {
 		UpdateContext: resourceClusterUpdate,
 		DeleteContext: resourceClusterDelete,
 		Schema: map[string]*schema.Schema{
-			"skip_manager_validation": &schema.Schema{
+			"skip_manager_validation": {
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  false,
 			},
-			"nodes": &schema.Schema{
+			"nodes": {
 				Type:     schema.TypeList,
 				Required: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
-						"hostname": &schema.Schema{
+						"hostname": {
 							Type:     schema.TypeString,
 							Required: true,
 						},
-						"public_address": &schema.Schema{
+						"public_address": {
 							Type:     schema.TypeString,
 							Required: true,
 						},
-						"private_address": &schema.Schema{
+						"private_address": {
 							Type:     schema.TypeString,
 							Required: true,
 						},
-						"tags": &schema.Schema{
+						"tags": {
 							Type:     schema.TypeMap,
 							Required: true,
 							Elem:     &schema.Schema{Type: schema.TypeString},
@@ -67,13 +67,13 @@ func resourceCluster() *schema.Resource {
 					},
 				},
 			},
-			"created_at": &schema.Schema{
+			"created_at": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 			},
 
-			"updated_at": &schema.Schema{
+			"updated_at": {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,

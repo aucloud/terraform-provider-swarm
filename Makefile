@@ -3,7 +3,7 @@ HOSTNAME=github.com
 NAMESPACE=aucloud
 NAME=swarm
 BINARY=terraform-provider-${NAME}
-VERSION=1.0.2
+VERSION=1.1.1
 OS_ARCH=darwin_amd64
 
 default: install

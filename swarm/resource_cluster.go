@@ -109,7 +109,7 @@ func resourceClusterCreate(ctx context.Context, d *schema.ResourceData, m interf
 	}
 
 	managers := vmnodes.FilterByTag(swarm.RoleTag, swarm.ManagerRole)
-	if len(managers) != 1 {
+	if len(managers) == 0 {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
 			Summary:  "No managers found in cluster config",

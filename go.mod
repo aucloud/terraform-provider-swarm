@@ -82,3 +82,9 @@ require (
 	google.golang.org/grpc v1.42.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
+
+replace github.com/aucloud/go-swarm => /Users/prologic/Contributions/go-swarm
+
+replace github.com/aucloud/go-runcmd => /Users/prologic/Contributions/go-runcmd
+
+replace github.com/aucloud/go-sshutil => /Users/prologic/Contributions/go-sshutil

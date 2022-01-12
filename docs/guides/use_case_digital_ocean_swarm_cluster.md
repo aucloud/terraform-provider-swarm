@@ -30,7 +30,7 @@ terraform {
     }
     swarm = {
       source = "aucloud/swarm"
-      version = "1.0.0"
+      version = "~> 1.2"
     }
   }
   required_version = ">= 0.13"

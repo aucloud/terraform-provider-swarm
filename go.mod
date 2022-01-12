@@ -16,7 +16,6 @@ require (
 	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
-	github.com/apparentlymart/go-textseg v1.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/aucloud/go-runcmd v0.0.0-20211125235723-58e8649483c8 // indirect

@@ -29,5 +29,6 @@ provider "swarm" {
 
 - **ssh_addr** (String)
 - **ssh_key** (String, Sensitive)
+- **ssh_timeout** (String)
 - **ssh_user** (String)
 - **use_local** (Boolean)

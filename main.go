@@ -23,12 +23,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/aucloud/terraform-provider-swarm/swarm"
 )
@@ -74,6 +74,7 @@ func main() {
 	}
 
 	if debugMode {
+		log.SetLevel(log.DebugLevel)
 		err := plugin.Debug(context.Background(), "registry.terraform.io/aucloud/swarm", opts)
 		if err != nil {
 			log.Fatal(err.Error())

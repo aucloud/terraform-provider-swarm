@@ -82,4 +82,7 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 )
 
-replace github.com/aucloud/go-runcmd => github.com/dnachev/go-runcmd v0.0.0-20220711045310-e32641aefa4c
+replace (
+  github.com/aucloud/go-runcmd => github.com/dnachev/go-runcmd v0.0.0-20220712061459-9ce06155c453
+  github.com/aucloud/go-swarm => github.com/dnachev/go-swarm v0.0.0-20220712064632-2085d756edfd
+)

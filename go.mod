@@ -81,3 +81,5 @@ require (
 	google.golang.org/grpc v1.42.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
+
+replace github.com/aucloud/go-runcmd => github.com/dnachev/go-runcmd v0.0.0-20220711045310-e32641aefa4c

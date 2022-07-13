@@ -22,6 +22,7 @@ package swarm
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -45,6 +46,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	sshAddr := d.Get("ssh_addr").(string)
 	sshUser := d.Get("ssh_user").(string)
 	sshKey := d.Get("ssh_key").(string)
+	useAgent := d.Get("use_ssh_agent").(bool)
 
 	var (
 		manager  *swarm.Manager
@@ -70,7 +72,13 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 			return nil, diags
 		}
 	} else {
-		switcher, err = swarm.NewSSHSwitcher(sshUser, sshAddr, sshKey, timeout)
+		var sshAuth swarm.SSHRunnerAuth
+		if useAgent {
+			sshAuth = swarm.NewAgentSSHRunnerAuth(os.Getenv("SSH_AUTH_SOCK"))
+		} else {
+			sshAuth = swarm.NewKeySSHRunnerAuth(sshKey)
+		}
+		switcher, err = swarm.NewSSHSwitcher(sshUser, sshAddr, sshAuth, timeout)
 		if err != nil {
 			return nil, diag.FromErr(fmt.Errorf("error creating ssh switcher: %w", err))
 		}
@@ -130,6 +138,11 @@ func Provider() *schema.Provider {
 				Optional:    true,
 				Sensitive:   true,
 				DefaultFunc: schema.EnvDefaultFunc("SSH_KEY", nil),
+			},
+			"use_ssh_agent": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("USE_SSH_AGENT", nil),
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
